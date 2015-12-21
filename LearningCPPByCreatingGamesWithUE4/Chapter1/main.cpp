@@ -8,5 +8,6 @@ int main()
 	std::cout << "Hello, World!" << std::endl;
 	std::cout << "I am a C++ Programmer" << std::endl;
 	std::cin.get();
+	cout << "Test" << endl;
 	return 0;	// "return" to the operating system
 }
