@@ -1,134 +1,6 @@
-#include <iostream>
-#include <string>
-
-using namespace std;
-
-class Mammal
-{
-protected:
-	// protected variables are like privates: they are
-	// accessible in this class but not outside the class.
-	// the difference between protected and private is
-	// protected means accessible in derived subclasses also
-
-	int hp;
-	double speed;
-
-public:
-	// Mammal constructor - runs FIRST before derived class ctor
-	Mammal()
-	{
-		hp = 100;
-		speed = 1.0;
-		cout << "A mammal is created!" << endl;
-	}
-
-	~Mammal()
-	{
-		cout << "A mammal has fallen" << endl;
-	}
-
-	// Common function to all Mammals and derivatives
-	void breath()
-	{
-		cout << "Breath in... breath out" << endl;
-	}
-
-	virtual void talk()
-	{
-		cout << "Mammal talk... override this function!" << endl;
-	}
-	// pure virtual function
-	virtual void walk() = 0;
-};
-
-class Dog : public Mammal
-{
-public:
-	Dog()
-	{
-		cout << "A dog is born!" << endl;
-	}
-	~Dog()
-	{
-		cout << "A dog has died" << endl;
-	}
-
-	virtual void talk() override
-	{
-		cout << "Woof!" << endl;
-	}
-	// implements walking for a dog
-	virtual void walk() override
-	{
-		cout << "Left front paw & back right paw, right front paw" << endl;
-	}
-};
-
-class Cat : public Mammal
-{
-public:
-	Cat()
-	{
-		cout << "A cat is born" << endl;
-	}
-	~Cat()
-	{
-		cout << "A cat has died" << endl;
-	}
-
-	virtual void talk() override
-	{
-		cout << "Meow!" << endl;
-	}
-	// implements walking for a cat... same as dog!
-	virtual void walk() override
-	{
-		cout << "Left front paw & back right paw, right front paw" << endl;
-	}
-};
-
-class Human : public Mammal
-{
-	// Data member unique to Human
-	bool civilized;
-public:
-	Human()
-	{
-		cout << "A new human is born" << endl;
-		speed = 2.0; // change speed. Since derived class ctor
-		// (ctor is short for constructor!) runs after base
-		// class ctor, initialization sticks initialize member
-		// variables specific to this class
-		civilized = true;
-	}
-	~Human()
-	{
-		cout << "The human has died!" << endl;
-	}
-
-	virtual void talk() override
-	{
-		cout << "I'm good looking for a... human" << endl;
-	}
-	// implements walking for a human...
-	virtual void walk() override
-	{
-		cout << "Left, right, left, right at the speed of " << speed << endl;
-	}
-	// member functions uniqur to human derivative
-	void attack()
-	{
-		if (civilized)
-		{
-			cout << "Why would a human attack an other?" << endl;
-		}
-		else
-		{
-			cout << "A human attacks another" << endl;
-		}
-	}
-};
+#include "Dog.h"
+#include "Cat.h"
+#include "Human.h"
 
 struct Armor
 {
@@ -225,6 +97,12 @@ int main()
 	dog.breath();
 	dog.talk();
 	dog.walk();
+
+	human.~Human();
+	cat.~Cat();
+	dog.~Dog();
+
+	cin.get();
 
 	return 0;
 }
