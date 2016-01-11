@@ -98,11 +98,13 @@ int main()
 	dog.talk();
 	dog.walk();
 
-	human.~Human();
+	
+	/*human.~Human();
 	cat.~Cat();
 	dog.~Dog();
+	me.~Player();*/
 
-	cin.get();
+	//cin.get();
 
 	return 0;
 }
