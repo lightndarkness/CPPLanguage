@@ -49,9 +49,9 @@ int main()
 	cout << "Character " << p.name << " has "
 		<< p.hp << " hp and " << p.goldPieces << " gold." << endl;
 
-	Player *ptrP; // Declaring a pointer
+	Player* ptrP; // Declaring a pointer
 				  //string name = "Gianni";
-	string *ptrName = &name;
+	string* ptrName = &name;
 
 	ptrP = &p;
 
@@ -74,8 +74,6 @@ int main()
 	int age;
 	cin >> age;
 	printf("Name: %s Age: %d\n", name.c_str(), age);
-
-	cin.get();
 
 	return 0;
 }

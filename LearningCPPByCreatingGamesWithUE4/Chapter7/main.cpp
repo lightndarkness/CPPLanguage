@@ -58,7 +58,7 @@ int main()
 	int size;
 	cin >> size;
 
-	int *array2 = new int[size];
+	int* array2 = new int[size];
 
 	for (int index = 0; index < size; index++)
 	{
@@ -73,7 +73,7 @@ int main()
 	int cSize;
 	cin >> cSize;
 
-	int *cArray = (int*)malloc(size*sizeof(int)); // C style
+	int* cArray = (int*)malloc(size*sizeof(int)); // C style
 
 	for (int index = 0; index < size; index++)
 	{
