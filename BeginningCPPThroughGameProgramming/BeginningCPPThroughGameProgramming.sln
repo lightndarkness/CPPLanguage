@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GameOver", "GameOver\GameOver.vcxproj", "{813FB037-27ED-4A8F-97DB-EE4BB21879B5}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Chapter1", "GameOver\GameOver.vcxproj", "{813FB037-27ED-4A8F-97DB-EE4BB21879B5}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Chapter2", "Chapter2\Chapter2.vcxproj", "{DFDCF2EA-1D0C-4FC0-9E04-0581E4900E1E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,14 @@ Global
 		{813FB037-27ED-4A8F-97DB-EE4BB21879B5}.Release|x64.Build.0 = Release|x64
 		{813FB037-27ED-4A8F-97DB-EE4BB21879B5}.Release|x86.ActiveCfg = Release|Win32
 		{813FB037-27ED-4A8F-97DB-EE4BB21879B5}.Release|x86.Build.0 = Release|Win32
+		{DFDCF2EA-1D0C-4FC0-9E04-0581E4900E1E}.Debug|x64.ActiveCfg = Debug|x64
+		{DFDCF2EA-1D0C-4FC0-9E04-0581E4900E1E}.Debug|x64.Build.0 = Debug|x64
+		{DFDCF2EA-1D0C-4FC0-9E04-0581E4900E1E}.Debug|x86.ActiveCfg = Debug|Win32
+		{DFDCF2EA-1D0C-4FC0-9E04-0581E4900E1E}.Debug|x86.Build.0 = Debug|Win32
+		{DFDCF2EA-1D0C-4FC0-9E04-0581E4900E1E}.Release|x64.ActiveCfg = Release|x64
+		{DFDCF2EA-1D0C-4FC0-9E04-0581E4900E1E}.Release|x64.Build.0 = Release|x64
+		{DFDCF2EA-1D0C-4FC0-9E04-0581E4900E1E}.Release|x86.ActiveCfg = Release|Win32
+		{DFDCF2EA-1D0C-4FC0-9E04-0581E4900E1E}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
