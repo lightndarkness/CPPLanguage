@@ -227,6 +227,8 @@ int main()
 		Data: 08/03/2016
 	*/
 
+//int main() {
+
 	enum Answer : int
 	{
 		Yes = 1, TooHigh, TooLow
@@ -235,16 +237,14 @@ int main()
 	srand(static_cast<unsigned int>(time(0))); // seed del generatore di numeri random
 	
 	int numberOfTries = 0;
-	int numberGuessed;
 	int max = 101;
 	int min = 1;
-	int response;
 	Answer userAnswer;
 	
 	std::cout << "Ciao pensa a un numero da 1 a 100 ed io lo indovinero'!" << std::endl;
 	do
 	{
-		numberGuessed = rand() % (max - min) + min; // genera numero random nel range min - max
+		int numberGuessed = rand() % (max - min) + min; // genera numero random nel range min - max
 		++numberOfTries;
 		
 		std::cout << "Credo sia " << numberGuessed << ". Ho indovinato? " << std::endl << std::endl;
@@ -252,6 +252,7 @@ int main()
 		std::cout << "2. No, troppo alto!" << std::endl << std::endl;
 		std::cout << "3. No, troppo basso!" << std::endl << std::endl;
 
+		int response;
 		std::cin >> response;
 		userAnswer = static_cast<Answer>(response); // converte la variabile di tipo int in Answer
 
