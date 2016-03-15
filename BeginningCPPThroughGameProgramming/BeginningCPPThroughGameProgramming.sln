@@ -7,6 +7,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Chapter1", "GameOver\GameOv
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Chapter2", "Chapter2\Chapter2.vcxproj", "{DFDCF2EA-1D0C-4FC0-9E04-0581E4900E1E}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Chapter3", "Chapter3\Chapter3.vcxproj", "{AE7A2113-51FC-43A7-806D-B4E6B8D69CE8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -31,6 +33,14 @@ Global
 		{DFDCF2EA-1D0C-4FC0-9E04-0581E4900E1E}.Release|x64.Build.0 = Release|x64
 		{DFDCF2EA-1D0C-4FC0-9E04-0581E4900E1E}.Release|x86.ActiveCfg = Release|Win32
 		{DFDCF2EA-1D0C-4FC0-9E04-0581E4900E1E}.Release|x86.Build.0 = Release|Win32
+		{AE7A2113-51FC-43A7-806D-B4E6B8D69CE8}.Debug|x64.ActiveCfg = Debug|x64
+		{AE7A2113-51FC-43A7-806D-B4E6B8D69CE8}.Debug|x64.Build.0 = Debug|x64
+		{AE7A2113-51FC-43A7-806D-B4E6B8D69CE8}.Debug|x86.ActiveCfg = Debug|Win32
+		{AE7A2113-51FC-43A7-806D-B4E6B8D69CE8}.Debug|x86.Build.0 = Debug|Win32
+		{AE7A2113-51FC-43A7-806D-B4E6B8D69CE8}.Release|x64.ActiveCfg = Release|x64
+		{AE7A2113-51FC-43A7-806D-B4E6B8D69CE8}.Release|x64.Build.0 = Release|x64
+		{AE7A2113-51FC-43A7-806D-B4E6B8D69CE8}.Release|x86.ActiveCfg = Release|Win32
+		{AE7A2113-51FC-43A7-806D-B4E6B8D69CE8}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

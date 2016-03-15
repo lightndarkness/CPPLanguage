@@ -231,7 +231,7 @@ int main()
 
 	enum Answer : int
 	{
-		Yes = 1, TooHigh, TooLow
+		YES = 1, TOO_HIGH, TOO_LOW
 	};
 
 	srand(static_cast<unsigned int>(time(0))); // seed del generatore di numeri random
@@ -258,13 +258,13 @@ int main()
 
 		switch (userAnswer)
 		{
-		case Yes:
+		case YES:
 			std::cout << "Ho indovinato in " << numberOfTries << " tentativi." << std::endl;
 			break;
-		case TooHigh:
+		case TOO_HIGH:
 			max = numberGuessed;
 			break;
-		case TooLow:
+		case TOO_LOW:
 			min = numberGuessed + 1;
 			break;
 		default:
@@ -272,7 +272,7 @@ int main()
 			break;
 		}
 		
-	} while (userAnswer != Yes);
+	} while (userAnswer != YES);
 
 	return 0;
 }
