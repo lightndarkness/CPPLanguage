@@ -2,6 +2,8 @@
 
 #include "BatteryCollector.h"
 #include "BatteryCollectorCharacter.h"
+#include "PickUp.h"
+#include "BatteryPickUp.h"
 
 //////////////////////////////////////////////////////////////////////////
 // ABatteryCollectorCharacter
@@ -37,8 +39,21 @@ ABatteryCollectorCharacter::ABatteryCollectorCharacter()
 	FollowCamera->AttachTo(CameraBoom, USpringArmComponent::SocketName); // Attach the camera to the end of the boom and let the boom adjust to match the controller orientation
 	FollowCamera->bUsePawnControlRotation = false; // Camera does not rotate relative to arm
 
+	// Create the collection sphere
+	CollectionSphere = CreateDefaultSubobject<USphereComponent>(TEXT("CollectionSphere"));
+	CollectionSphere->AttachTo(RootComponent);
+	CollectionSphere->SetSphereRadius(200.f);
+
 	// Note: The skeletal mesh and anim blueprint references on the Mesh component (inherited from Character) 
 	// are set in the derived blueprint asset named MyCharacter (to avoid direct content references in C++)
+
+	// set a base power level for the character
+	InitialPower = 2000.f;
+	CharacterPower = InitialPower;
+
+	// set the dependence of the speed on the power level
+	SpeedFactor = 0.75f;
+	BaseSpeed = 10.0f;
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -50,6 +65,7 @@ void ABatteryCollectorCharacter::SetupPlayerInputComponent(class UInputComponent
 	check(InputComponent);
 	InputComponent->BindAction("Jump", IE_Pressed, this, &ACharacter::Jump);
 	InputComponent->BindAction("Jump", IE_Released, this, &ACharacter::StopJumping);
+	InputComponent->BindAction("Collect", IE_Pressed, this, &ABatteryCollectorCharacter::CollectPickUps);
 
 	InputComponent->BindAxis("MoveForward", this, &ABatteryCollectorCharacter::MoveForward);
 	InputComponent->BindAxis("MoveRight", this, &ABatteryCollectorCharacter::MoveRight);
@@ -124,4 +140,68 @@ void ABatteryCollectorCharacter::MoveRight(float Value)
 		// add movement in that direction
 		AddMovementInput(Direction, Value);
 	}
+}
+
+void ABatteryCollectorCharacter::CollectPickUps()
+{
+	// Get all overlaping actors and store them in array
+	TArray<AActor*> CollectedActors;
+	CollectionSphere->GetOverlappingActors(CollectedActors);
+
+	// keep track of the collected battery power
+	float CollectedPower = 0;
+
+	// foreach actor in array
+	for (int32 iCollected = 0; iCollected < CollectedActors.Num(); ++iCollected)
+	{
+		// cast the actor to pickup
+		APickUp* const TestPickUp = Cast<APickUp>(CollectedActors[iCollected]);
+
+		// if the cast is successfull and the pickup is valid and active
+		if (TestPickUp && !TestPickUp->IsPendingKill() && TestPickUp->IsActive())
+		{
+			// call the pickup's WasCallected function
+			TestPickUp->WasCollected();
+
+			// Check to see if the pickup is also a battery
+			const ABatteryPickUp* TestBattery = Cast<ABatteryPickUp>(TestPickUp);
+
+			if (TestBattery)
+			{
+				// Increase the collected power
+				CollectedPower += TestBattery->GetPower();
+			}
+
+			// deactivate the pickup
+			TestPickUp->SetActive(false);
+		}
+	}
+	if (CollectedPower > 0)
+	{
+		UpdatePower(CollectedPower);
+	}
+
+}
+
+// reports the character's InitalPower
+float ABatteryCollectorCharacter::GetInitialPower()
+{
+	return InitialPower;
+}
+
+// reports the character's CurrentPower
+float ABatteryCollectorCharacter::GetCurrentPower()
+{
+	return CharacterPower;
+}
+
+// called whenever power is increased or decreased
+void ABatteryCollectorCharacter::UpdatePower(float PowerChange)
+{
+	// change power
+	CharacterPower += PowerChange;
+	// change the speed based on power
+	GetCharacterMovement()->MaxWalkSpeed = BaseSpeed + SpeedFactor * CharacterPower;
+	// call visual effect
+	PowerChangeEffect();
 }

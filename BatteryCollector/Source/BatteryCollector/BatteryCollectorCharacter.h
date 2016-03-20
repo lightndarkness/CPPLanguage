@@ -15,6 +15,11 @@ class ABatteryCollectorCharacter : public ACharacter
 	/** Follow camera */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	class UCameraComponent* FollowCamera;
+
+	/** Collection Sphere */
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Collection, meta = (AllowPrivateAccess = "true"))
+	class USphereComponent* CollectionSphere;
+
 public:
 	ABatteryCollectorCharacter();
 
@@ -52,15 +57,54 @@ protected:
 	/** Handler for when a touch input stops. */
 	void TouchStopped(ETouchIndex::Type FingerIndex, FVector Location);
 
+	/**Moltiplier for our character speed */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Power", meta = (BlueprintProtected = true))
+	float SpeedFactor;
+	
+	/**Speed when the power level is 0 */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Power", meta = (BlueprintProtected = true))
+	float BaseSpeed;
+
+	UFUNCTION(BlueprintImplementableEvent, Category = "Power")
+	void PowerChangeEffect();
+
 protected:
 	// APawn interface
 	virtual void SetupPlayerInputComponent(class UInputComponent* InputComponent) override;
 	// End of APawn interface
+
+	/** Called when we press a key to callect any pickups inside the CollectionSphere */
+	UFUNCTION(BlueprintCallable, Category = "PickUps")
+	void CollectPickUps();
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Power", meta = (BlueprintProtected = true))
+	/**Starting power of our character */
+	float InitialPower;
+
+private:
+	/** Current power level of outr character */
+	UPROPERTY(VisibleAnywhere, Category = "Power")
+	float CharacterPower;
 
 public:
 	/** Returns CameraBoom subobject **/
 	FORCEINLINE class USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
 	/** Returns FollowCamera subobject **/
 	FORCEINLINE class UCameraComponent* GetFollowCamera() const { return FollowCamera; }
+	/** Returns CollectionSphere Subobject */
+	FORCEINLINE class USphereComponent* GetCollectionSphere() const { return CollectionSphere; }
+
+	/** Accessor function for initial power */
+	UFUNCTION(BlueprintPure, Category = "Power")
+	float GetInitialPower();
+
+	/** Accessor function for current power */
+	UFUNCTION(BlueprintPure, Category = "Power")
+	float GetCurrentPower();
+
+	/** Function to update the character's power 
+	* @param PowerChange This is the amount to change the power by, and it can be positive or negative.
+	*/
+	void UpdatePower(float PowerChange);
 };
 
