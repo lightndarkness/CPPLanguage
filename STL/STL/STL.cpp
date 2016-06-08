@@ -68,7 +68,7 @@ int main()
 	}
 
 	double product2 = accumulate(begin(doubles), end(doubles), 1.0,
-		[](double partialresult, double d){return partialresult*d; });
+		[](double partialProduct, double d) {return partialProduct * d; });
 
 	int numberodds = count_if(begin(integers), end(integers), [](int i){return i % 2 == 1; });
 	vector<int> odds(numberodds);
@@ -84,6 +84,7 @@ int main()
 	auto colon = find(begin(sentence), end(sentence), ':');
 	char atcolon = *colon;
 
+	//int sum{ accumulate(2, 3, 0) };
 
 	return 0;
 }

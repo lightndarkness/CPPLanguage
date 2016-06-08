@@ -1,7 +1,7 @@
 // References.cpp : Defines the entry point for the console application.
 //
 
-
+void MultiplyByTwo(int& parameter);
 
 int main()
 {
@@ -17,6 +17,13 @@ int main()
 	int copy{ xref }; // Copies x to a new object named copy
 
 
+	MultiplyByTwo(x);
+
+
 	return 0;
 }
 
+void MultiplyByTwo(int &parameter)
+{
+	parameter *= 2;
+}

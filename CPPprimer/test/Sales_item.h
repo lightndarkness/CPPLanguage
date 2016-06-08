@@ -71,6 +71,7 @@ public:
     // operations on Sales_item objects
     std::string isbn() const { return bookNo; }
     double avg_price() const;
+	void BookReset();
 // private members as before
 private:
     std::string bookNo;      // implicitly initialized to the empty string
@@ -151,4 +152,13 @@ double Sales_item::avg_price() const
     else 
         return 0;
 }
+
+inline void Sales_item::BookReset()
+{
+	bookNo = "";
+	units_sold = 0;
+	revenue = 0;
+}
+
+
 #endif
