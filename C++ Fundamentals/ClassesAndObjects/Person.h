@@ -1,10 +1,8 @@
-#pragma once
+#ifndef _PERSON_H
+#define _PERSON_H
+
 
 #include <string>
-//#ifndef _Person_H
-//#define _Person_H
-
-
 
 class Person
 {
@@ -20,7 +18,6 @@ public:
 
 	bool operator<(Person& p);
 	bool operator<(int i);
-	friend bool operator<(int i, Person& p);
 
 
 private:
@@ -29,5 +26,6 @@ private:
 
 	int arbitraryNumber;
 };
-//bool operator<(int i, Person& p);
-//#endif // !_Person_H
+
+bool operator<(int i, Person& p);
+#endif // !_PERSON_H

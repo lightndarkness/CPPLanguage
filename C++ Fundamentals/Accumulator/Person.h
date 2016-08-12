@@ -1,10 +1,4 @@
-#pragma once
-
 #include <string>
-//#ifndef _Person_H
-//#define _Person_H
-
-
 
 class Person
 {
@@ -15,12 +9,11 @@ public:
 	~Person();
 
 	std::string GetName();
-	int GetNumber() { return arbitraryNumber; }
+	int GetNumber() const { return arbitraryNumber; }
 	void SetNumber(int number) { arbitraryNumber = number; }
 
 	bool operator<(Person& p);
 	bool operator<(int i);
-	friend bool operator<(int i, Person& p);
 
 
 private:
@@ -29,5 +22,4 @@ private:
 
 	int arbitraryNumber;
 };
-//bool operator<(int i, Person& p);
-//#endif // !_Person_H
+bool operator<(int i, Person& p);

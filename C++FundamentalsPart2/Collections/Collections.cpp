@@ -3,6 +3,8 @@
 #include <map>
 #include <algorithm>
 #include <string>
+#include <memory>
+#include <list>
 
 #include "Person.h"
 
@@ -105,6 +107,6 @@ int main()
 	std::cout << length << " " << firstfour;
 
 	std::cout << std::endl;
-	
+
 	return 0;
 }

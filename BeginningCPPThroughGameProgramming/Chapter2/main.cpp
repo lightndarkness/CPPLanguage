@@ -2,8 +2,8 @@
 // Demonstrates the if statements
 
 #include <iostream>
-#include <string>
-#include <cstdlib>
+//#include <string>
+//#include <cstdlib>
 #include <ctime>
 
 int main()
@@ -27,7 +27,7 @@ int main()
 	{
 		std::cout << "This is never displayed either.\n\n";
 	}
-	
+
 	int score = 1000;
 
 	if (score)
@@ -219,47 +219,49 @@ int main()
 		}
 	} while (numberGuessed != numberToGuess);*/
 
-	/* Questo è un semplicissimo gioco in cui il giocatore 
+	/* Questo è un semplicissimo gioco in cui il giocatore
 		pensa a un numero e il computer lo deve indovinare
 		in base alle indicazioni "Troppo alto" o "Troppo basso"
-		
+
 		Programmatore: Casole Giovanni
 		Data: 08/03/2016
 	*/
 
-//int main() {
+	//int main() {
 
-	enum Answer : int
+	enum Answer : char
 	{
 		YES = 1, TOO_HIGH, TOO_LOW
 	};
 
-	srand(static_cast<unsigned int>(time(0))); // seed del generatore di numeri random
-	
-	int numberOfTries = 0;
-	int max = 101;
-	int min = 1;
+	srand(static_cast<unsigned int>(time(0))); // seeds the random generator
+
+	short numberOfTries = 0;
+	char max = 101;
+	char min = 1;
 	Answer userAnswer;
-	
-	std::cout << "Ciao pensa a un numero da 1 a 100 ed io lo indovinero'!" << std::endl;
+
+	std::cout << "Hi, think a number from 1 to 100 and I'll guess it!" << std::endl;
 	do
 	{
-		int numberGuessed = rand() % (max - min) + min; // genera numero random nel range min - max
+		static short numberGuessed;
+		numberGuessed = rand() % (max - min) + min; // generate random number in range min - max
 		++numberOfTries;
-		
-		std::cout << "Credo sia " << numberGuessed << ". Ho indovinato? " << std::endl << std::endl;
-		std::cout << "1. Si, hai indovinato!" << std::endl << std::endl;
-		std::cout << "2. No, troppo alto!" << std::endl << std::endl;
-		std::cout << "3. No, troppo basso!" << std::endl << std::endl;
 
-		int response;
+		std::cout << "I think it's " << numberGuessed << ". Am I right? " << std::endl << std::endl;
+		std::cout << "1. Yes, you're right!" << std::endl << std::endl;
+		std::cout << "2. No, too high!" << std::endl << std::endl;
+		std::cout << "3. No, too low!" << std::endl << std::endl;
+
+		static short response;
 		std::cin >> response;
-		userAnswer = static_cast<Answer>(response); // converte la variabile di tipo int in Answer
+
+		userAnswer = static_cast<Answer>(response); // convert the variable from int type to Answer type
 
 		switch (userAnswer)
 		{
 		case YES:
-			std::cout << "Ho indovinato in " << numberOfTries << " tentativi." << std::endl;
+			std::cout << "I guessed it in " << numberOfTries << " tries." << std::endl;
 			break;
 		case TOO_HIGH:
 			max = numberGuessed;
@@ -268,11 +270,14 @@ int main()
 			min = numberGuessed + 1;
 			break;
 		default:
-			std::cout << "Non ho capito!" << std::endl;
+			std::cout << "I didn't understand!" << std::endl;
 			break;
 		}
-		
 	} while (userAnswer != YES);
+
+
+	std::cin.ignore();
+	std::cin.get();
 
 	return 0;
 }

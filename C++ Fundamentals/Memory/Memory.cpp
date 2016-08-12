@@ -15,5 +15,10 @@ int main()
 	Person Kate2 = Kate;
 	Kate = Kate2;
 	string s1 = Kate.GetResourceName();
+	Person Gianni(Kate);
+	Gianni.SetNumber(10081986);
+	Gianni.SetFirstName("Gianni");
+	Gianni.SetLastName("Casole");
+	Gianni.AddResource();
 	return 0;
 }
