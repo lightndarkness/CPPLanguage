@@ -1,4 +1,4 @@
-// Progetto Battery Collerctor dal canale Unreal Engine di YouTube.
+// Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
 
@@ -20,32 +20,21 @@ public:
 	// Called every frame
 	virtual void Tick( float DeltaSeconds ) override;
 
-	/** Returns the WhereToSpawn SubObject */
+	/** Return the WhreToSpawn subobject */
 	FORCEINLINE class UBoxComponent* GetWhereToSpawn() const { return WhereToSpawn; }
 
 	/** Find a random point within the BoxComponent */
 	UFUNCTION(BlueprintPure, Category = "Spawning")
 	FVector GetRandomPointInVolume();
 
-	/** Sets the spawning volume active or not */
-	UFUNCTION(BlueprintCallable, Category ="Spawning")
+	/** This function toggles whether or not the spawn volume spawns pickups */
+	UFUNCTION(BlueprintCallable, Category = "Spawning")
 	void SetSpawningActive(bool bShouldSpawn);
 
-private:
-	/** Box component to specify where the pickups should be spawned */
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Spawning", meta = (AllowPrivateAccess = true))
-	class UBoxComponent* WhereToSpawn;
-
-	/** Handle spawning a new pickup */
-	void SpawnPickUp();
-
-	/** the current spawn delay */
-	float SpawnDelay;
-	
 protected:
-	/** The picjup to spawn */
+	/** The pickup to spawn */
 	UPROPERTY(EditAnywhere, Category = "Spawning")
-	TSubclassOf<class APickUp> WhatToSpawn;
+	TSubclassOf<class APickup> WhatToSpawn;
 
 	FTimerHandle SpawnTimer;
 
@@ -53,7 +42,18 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Spawning")
 	float SpawnDelayRangeLow;
 
-	/** Maximum soawn delay*/
+	/** Maximum spawn delay */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Spawning")
 	float SpawnDelayRangeHigh;
+
+private:
+	/** Box Component to specify where pickups should be spawned */
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Spawning", meta = (AllowPrivateAccess = true))
+	class UBoxComponent* WhereToSpawn;
+	
+	/** Handle spawning a new pickup */
+	void SpawnPickup();
+
+	/** The current spawn delay */
+	float SpawnDelay;
 };

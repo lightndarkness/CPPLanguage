@@ -1,4 +1,4 @@
-// Copyright 1998-2015 Epic Games, Inc. All Rights Reserved.
+// Copyright 1998-2016 Epic Games, Inc. All Rights Reserved.
 #pragma once
 #include "GameFramework/Character.h"
 #include "BatteryCollectorCharacter.generated.h"
@@ -16,8 +16,8 @@ class ABatteryCollectorCharacter : public ACharacter
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	class UCameraComponent* FollowCamera;
 
-	/** Collection Sphere */
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Collection, meta = (AllowPrivateAccess = "true"))
+	/** Collection sphere */
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	class USphereComponent* CollectionSphere;
 
 public:
@@ -30,6 +30,21 @@ public:
 	/** Base look up/down rate, in deg/sec. Other scaling may affect final rate. */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category=Camera)
 	float BaseLookUpRate;
+
+	/** Accessor function for the initial power of the character */
+	UFUNCTION(BlueprintPure, Category = "Power")
+	float GetInitialPower() const;
+
+	/** Accessor function for the current power of the character */
+	UFUNCTION(BlueprintPure, Category = "Power")
+	float GetCurrentPower() const;
+
+	/** 
+	Function to update the character's power
+	* @param PowerChange This is the amount to change the power by, and it can be positive or negative.
+	*/
+	UFUNCTION(BlueprintCallable, Category = "Power")
+	void UpdatePower(float PowerChange);
 
 protected:
 
@@ -57,32 +72,32 @@ protected:
 	/** Handler for when a touch input stops. */
 	void TouchStopped(ETouchIndex::Type FingerIndex, FVector Location);
 
-	/**Moltiplier for our character speed */
+protected:
+	// APawn interface
+	virtual void SetupPlayerInputComponent(class UInputComponent* InputComponent) override;
+	// End of APawn interface
+
+	/** Called when we press a key to collect any pickups inside the collection sphere */
+	UFUNCTION(BlueprintCallable, Category = "Pickups")
+	void CollectPickups();
+
+	/** The starting power of the character */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Power", meta = (BlueprintProtected = true))
+	float InitialPower;
+
+	/** Multiplier for the character speed */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Power", meta = (BlueprintProtected = true))
 	float SpeedFactor;
-	
-	/**Speed when the power level is 0 */
+
+	/** Speed when the power level = 0 */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Power", meta = (BlueprintProtected = true))
 	float BaseSpeed;
 
 	UFUNCTION(BlueprintImplementableEvent, Category = "Power")
 	void PowerChangeEffect();
 
-protected:
-	// APawn interface
-	virtual void SetupPlayerInputComponent(class UInputComponent* InputComponent) override;
-	// End of APawn interface
-
-	/** Called when we press a key to callect any pickups inside the CollectionSphere */
-	UFUNCTION(BlueprintCallable, Category = "PickUps")
-	void CollectPickUps();
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Power", meta = (BlueprintProtected = true))
-	/**Starting power of our character */
-	float InitialPower;
-
 private:
-	/** Current power level of outr character */
+	/** Current power of the character */
 	UPROPERTY(VisibleAnywhere, Category = "Power")
 	float CharacterPower;
 
@@ -91,20 +106,8 @@ public:
 	FORCEINLINE class USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
 	/** Returns FollowCamera subobject **/
 	FORCEINLINE class UCameraComponent* GetFollowCamera() const { return FollowCamera; }
-	/** Returns CollectionSphere Subobject */
+	/** Returns CollectionSphere subobject **/
 	FORCEINLINE class USphereComponent* GetCollectionSphere() const { return CollectionSphere; }
 
-	/** Accessor function for initial power */
-	UFUNCTION(BlueprintPure, Category = "Power")
-	float GetInitialPower();
-
-	/** Accessor function for current power */
-	UFUNCTION(BlueprintPure, Category = "Power")
-	float GetCurrentPower();
-
-	/** Function to update the character's power 
-	* @param PowerChange This is the amount to change the power by, and it can be positive or negative.
-	*/
-	void UpdatePower(float PowerChange);
 };
 

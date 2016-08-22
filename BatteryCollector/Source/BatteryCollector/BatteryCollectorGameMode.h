@@ -1,9 +1,10 @@
-// Copyright 1998-2015 Epic Games, Inc. All Rights Reserved.
+// Copyright 1998-2016 Epic Games, Inc. All Rights Reserved.
 #pragma once
 #include "GameFramework/GameMode.h"
 #include "BatteryCollectorGameMode.generated.h"
 
-/** enum to store the current state of gameplay */
+
+/** enum to store the current state of the gameplay */
 UENUM(BlueprintType)
 enum class EBatteryPlayState
 {
@@ -21,32 +22,32 @@ class ABatteryCollectorGameMode : public AGameMode
 public:
 	ABatteryCollectorGameMode();
 
-	virtual void BeginPlay() override;
-
 	virtual void Tick(float DeltaTime) override;
 
-	/** Returns the power needed to win - for the HUD */
+	/** Returns power needed to win - needed for the HUD */
 	UFUNCTION(BlueprintPure, Category = "Power")
 	float GetPowerToWin() const;
+
+	virtual void BeginPlay() override;
 
 	/** Returns the current play state */
 	UFUNCTION(BlueprintPure, Category = "Power")
 	EBatteryPlayState GetCurrentPlayState() const;
 
-	/** Sets a new play state */
-	void SetCurrentPlayState(EBatteryPlayState NewPlayState);
+	/** Sets a new game state */
+	void SetCurrentPlayState(EBatteryPlayState NewState);
 
 protected:
-	/**The rate at which the character loses power */
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Power")
+	/** The rate at wich the character loses power */
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Power", meta = (BlueprintProtected = true))
 	float DecayRate;
 
 	/** The power needed to win the game */
-	UPROPERTY(EditdefaultsOnly, BlueprintReadWrite, Category = "Power", meta = (BlueprintProtected = true))
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Power", meta = (BlueprintProtected = true))
 	float PowerToWin;
 
-	/** The widget class to use for our hud screen */
-	UPROPERTY(EditdefaultsOnly, BlueprintReadWrite, Category = "Power", meta = (BlueprintProtected = true))
+	/** The Widget class to use for our HUD screen */
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Power", meta = (BlueprintProtected = true))
 	TSubclassOf<class UUserWidget> HUDWidgetClass;
 
 	/** The instance of the HUD */
@@ -54,11 +55,14 @@ protected:
 	class UUserWidget* CurrentWidget;
 
 private:
-	/** Keeps track of the current state */
-	EBatteryPlayState CurrentPlayState;
+	/** Keeps track of the current playing state */
+	EBatteryPlayState CurrentState;
 
 	TArray<class ASpawnVolume*> SpawnVolumeActors;
 
-	/** This will handle any function calls that rely upon changing the playing state of our game */
-	void HandleNewState(EBatteryPlayState NewPlayState);
+	/** Handle any function calls that rely upon changing the playing state of our game */
+	void HandleNewState(EBatteryPlayState NewState);
 };
+
+
+

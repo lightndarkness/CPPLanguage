@@ -1,11 +1,11 @@
-// Copyright 1998-2015 Epic Games, Inc. All Rights Reserved.
+// Copyright 1998-2016 Epic Games, Inc. All Rights Reserved.
 
 #include "BatteryCollector.h"
 #include "BatteryCollectorGameMode.h"
 #include "BatteryCollectorCharacter.h"
 #include "Kismet/GameplayStatics.h"
 #include "Blueprint/UserWidget.h"
-#include "SpawnVolume.h"
+#include "Pickup/SpawnVolume.h"
 
 ABatteryCollectorGameMode::ABatteryCollectorGameMode()
 {
@@ -16,8 +16,40 @@ ABatteryCollectorGameMode::ABatteryCollectorGameMode()
 		DefaultPawnClass = PlayerPawnBPClass.Class;
 	}
 
-	// base decay rate
+	// Base decay rate
 	DecayRate = 0.01f;
+}
+
+void ABatteryCollectorGameMode::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+
+	// Check that we are using the battery collector character
+	ABatteryCollectorCharacter* MyCharacter = Cast<ABatteryCollectorCharacter>(UGameplayStatics::GetPlayerPawn(this, 0));
+	if (MyCharacter)
+	{
+		// If our power is greater that needed to win, set the game's state to Won
+		if (MyCharacter->GetCurrentPower() > PowerToWin)
+		{
+			SetCurrentPlayState(EBatteryPlayState::EWon);
+		}
+		// if the character's power is positive
+		else if (MyCharacter->GetCurrentPower() > 0)
+		{
+			// Decrease the character's power using the decay rate
+			MyCharacter->UpdatePower(-DeltaTime * DecayRate * (MyCharacter->GetInitialPower()));
+		}
+		else
+		{
+			SetCurrentPlayState(EBatteryPlayState::EGameOver);
+		}
+		
+	}
+}
+
+float ABatteryCollectorGameMode::GetPowerToWin() const
+{
+	return PowerToWin;
 }
 
 void ABatteryCollectorGameMode::BeginPlay()
@@ -39,7 +71,7 @@ void ABatteryCollectorGameMode::BeginPlay()
 
 	SetCurrentPlayState(EBatteryPlayState::EPlaying);
 
-	// set the score beat
+	// set the score to beat
 	ABatteryCollectorCharacter* MyCharacter = Cast<ABatteryCollectorCharacter>(UGameplayStatics::GetPlayerPawn(this, 0));
 	if (MyCharacter)
 	{
@@ -54,61 +86,31 @@ void ABatteryCollectorGameMode::BeginPlay()
 			CurrentWidget->AddToViewport();
 		}
 	}
-}
 
-void ABatteryCollectorGameMode::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-
-	// CHeck that we are using the battery collector character
-	ABatteryCollectorCharacter* MyCharacter = Cast<ABatteryCollectorCharacter>(UGameplayStatics::GetPlayerPawn(this, 0));
-	if (MyCharacter)
-	{
-		// If our power is greater than needed to win, set the game's state to Won
-		if (MyCharacter->GetCurrentPower() > PowerToWin)
-		{
-			SetCurrentPlayState(EBatteryPlayState::EWon);
-		}
-
-		// if the character's power is positive
-		else if (MyCharacter->GetCurrentPower() > 0)
-		{
-			// decrease the character's power using the decay rate
-			MyCharacter->UpdatePower(-DeltaTime * DecayRate * (MyCharacter->GetInitialPower()));
-		}
-		else
-		{
-			SetCurrentPlayState(EBatteryPlayState::EGameOver);
-		}
-	}
-
-
-}
-
-float ABatteryCollectorGameMode::GetPowerToWin() const
-{
-	return PowerToWin;
+	
 }
 
 EBatteryPlayState ABatteryCollectorGameMode::GetCurrentPlayState() const
 {
-	return CurrentPlayState;
+	return CurrentState;
 }
 
-void ABatteryCollectorGameMode::SetCurrentPlayState(EBatteryPlayState NewPlayState)
+void ABatteryCollectorGameMode::SetCurrentPlayState(EBatteryPlayState NewState)
 {
-	CurrentPlayState = NewPlayState;
-	HandleNewState(CurrentPlayState);
+	// set the new state
+	CurrentState = NewState;
+	// handle the new state
+	HandleNewState(CurrentState);
 }
 
-void ABatteryCollectorGameMode::HandleNewState(EBatteryPlayState NewPlayState)
+void ABatteryCollectorGameMode::HandleNewState(EBatteryPlayState NewState)
 {
-	switch (NewPlayState)
+	switch (NewState)
 	{
-		// if the game is playing
+		// if the game is playing 
 		case EBatteryPlayState::EPlaying:
 		{
-			// spawn volume active
+			// spawn volumes active
 			for (ASpawnVolume* Volume : SpawnVolumeActors)
 			{
 				Volume->SetSpawningActive(true);
@@ -116,20 +118,22 @@ void ABatteryCollectorGameMode::HandleNewState(EBatteryPlayState NewPlayState)
 		}
 		break;
 
-		// if the game is over
+		// if you lose the game
 		case EBatteryPlayState::EGameOver:
 		{
-			// spawn volume inactive
 			for (ASpawnVolume* Volume : SpawnVolumeActors)
 			{
+				// spawn volumes inactive
 				Volume->SetSpawningActive(false);
 			}
-			// block input
+
+			// block player input
 			APlayerController* PlayerController = UGameplayStatics::GetPlayerController(this, 0);
 			if (PlayerController)
 			{
 				PlayerController->SetCinematicMode(true, false, false, true, true);
 			}
+
 			// ragdoll the character
 			ACharacter* MyCharacter = UGameplayStatics::GetPlayerCharacter(this, 0);
 			if (MyCharacter)
@@ -137,13 +141,14 @@ void ABatteryCollectorGameMode::HandleNewState(EBatteryPlayState NewPlayState)
 				MyCharacter->GetMesh()->SetSimulatePhysics(true);
 				MyCharacter->GetMovementComponent()->MovementState.bCanJump = false;
 			}
+			
 		}
 		break;
-	
-		// if the game is won
+
+		// if you win the game
 		case EBatteryPlayState::EWon:
 		{
-			// spawn volume inactive
+			// spawn volumes inactive
 			for (ASpawnVolume* Volume : SpawnVolumeActors)
 			{
 				Volume->SetSpawningActive(false);
@@ -151,7 +156,7 @@ void ABatteryCollectorGameMode::HandleNewState(EBatteryPlayState NewPlayState)
 		}
 		break;
 
-		// unknown state
+		// Unknown/Deafault state
 		default:
 		case EBatteryPlayState::EUnknown:
 		{
