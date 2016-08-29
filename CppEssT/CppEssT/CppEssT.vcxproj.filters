@@ -15,7 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="implicit-explicit.cpp">
+    <ClCompile Include="recursive_factorial.cpp">
       <Filter>File di origine</Filter>
     </ClCompile>
   </ItemGroup>
